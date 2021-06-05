@@ -18,10 +18,12 @@ tablero tableroActual ( posicion const &p );
 /****************************/
 /*Ejercicio1*/
 
-bool esPosicionValida(posicion);
 bool esMatriz(tablero t);
 bool CasillaValida(tablero t);
-
+bool  sinPeonesNoCoronados(tablero t);
+bool cantidadValidadePiezas(tablero t);
+bool esTableroValido(tablero t);
+bool EsPosicionValida(pair < tablero, int > const &po);
 
 
 #endif //AJEDREZLITE_AUXILIARES_H

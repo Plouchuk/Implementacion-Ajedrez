@@ -1,11 +1,12 @@
 #include <algorithm>
 #include "ejercicios.h"
+#include "auxiliares.h"
 
 // EJERCICIO 1
 bool posicionValida ( pair < tablero, int > const &p ) {
-    bool resp = false;
+    bool resp = true;
     // completar codigo
-    esPosicionValida(p);
+    resp = resp && EsPosicionValida(p);
     return resp;
 }
 
