@@ -348,3 +348,5 @@ vector <coordenada > AtacadasTorre (int i, int k, vector<coordenada> &Ac, tabler
     }
     return Ac;
 }
+
+//Prueba modificacion SEBA
