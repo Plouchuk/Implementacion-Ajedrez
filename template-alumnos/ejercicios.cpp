@@ -12,13 +12,35 @@ bool posicionValida ( pair < tablero, int > const &p ) {
 
 // EJERCICIO 2
 bool posicionInicial ( posicion const &p ) {
-    bool resp = false;
+    bool resp ;
     // completar codigo
+    resp = esPosicionInicial(p) && p.second == BLANCO;
     return resp;
 }
 // EJERCICIO 3
 vector <coordenada> casillasAtacadas ( posicion const &p, int j ) {
     vector <coordenada> cA;
+    tablero t = p.first;
+    for (int i = 0; i < t.size() ; ++i) {
+        for (int k = 0; k < t.size()  ; ++k) {
+        if(t[i][k] == cPEON_B && j == BLANCO){
+          cA = AtacadasPeonB(i,k,cA );
+        }
+        if(t[i][k] == cPEON_N && j == NEGRO){
+               cA= AtacadasPeonN(i,k,cA);
+            }
+        if ((t[i][k] ).first == REY && (t[i][k] ).second == j ){
+               cA =  AtacadasRey (i,k, cA);
+            }
+        if ((t[i][k] ).first == ALFIL && (t[i][k] ).second == j ){
+                cA = AtacadasAlfil(i ,k , cA, t);
+            }
+            if ((t[i][k] ).first == TORRE && (t[i][k] ).second == j ){
+                cA = AtacadasTorre(i ,k , cA, t);
+            }
+        }
+
+    }
     // completar codigo
     return cA;
 }
