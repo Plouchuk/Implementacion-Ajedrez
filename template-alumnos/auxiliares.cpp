@@ -1,6 +1,9 @@
 #include "definiciones.h"
 #include "auxiliares.h"
 
+
+
+//CAMBIADOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 using namespace std;
 // aqui se pueden ubicar todas las funciones auxiliares de soporte para la resolucion de los ejercicios
 pair<int,int> mp(int a, int b) {
