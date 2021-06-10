@@ -53,7 +53,11 @@ bool posicionSiguienteCorrecta ( posicion const &p1, posicion const &p2, coorden
 }
 // EJERCICIO 5
 void ordenarTablero ( posicion &p ) {
-    // completar codigo
+
+    for (int i = 0; i < p.first.size(); ++i) {
+        p.first[i] = ordenarFila(p.first[i]);
+    }
+
     return;
 }
 // EJERCICIO 6

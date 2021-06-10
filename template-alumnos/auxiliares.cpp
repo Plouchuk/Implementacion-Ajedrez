@@ -2,8 +2,6 @@
 #include "auxiliares.h"
 
 
-
-//aguante boquita
 using namespace std;
 // aqui se pueden ubicar todas las funciones auxiliares de soporte para la resolucion de los ejercicios
 pair<int,int> mp(int a, int b) {
@@ -351,7 +349,6 @@ vector <coordenada > AtacadasTorre (int i, int k, vector<coordenada> &Ac, tabler
     return Ac;
 }
 
-//Prueba modificacion SEBA
 
 // Ejercicio 4
 
@@ -463,4 +460,42 @@ bool movimientoBienRealizado (posicion p1, posicion p2, coordenada o, coordenada
     else{ res = (!estaOcupada(t2[o1][o2]) && (t1[o1][o2]) == (t2[d1][d2]) );
     }
     return res;
+}
+
+// Ejercicio 5
+
+int findMinPosition(vector<casilla> &v, int d, int h) {
+    int min = d;
+    for(int i = d + 1; i < h; i++) {
+        if (v[i].first < v[min].first && v[i].first != VACIO) {
+            min = i;
+        }
+    }
+    return min;
+}
+
+void swap(vector<casilla> &v ,int i, int j){
+    casilla aux = v[i];
+    v[i] = v[j];
+    v[j] = aux;
+}
+
+
+void selectionSort(vector<casilla> &v) {
+    for(int i=0; i<v.size()-1; i++) {
+        int minPos= findMinPosition(v, i, v.size());
+        if (minPos != i){
+            swap(v, i, minPos);
+        }
+
+    }
+}
+
+
+vector<casilla> ordenarFila(vector<casilla> &v){
+
+    selectionSort(v);
+
+    return v;
+
 }
