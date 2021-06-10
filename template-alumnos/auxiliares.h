@@ -33,5 +33,10 @@ bool pertenece (coordenada o, vector<coordenada> Ac);
 bool coordValida (coordenada c);
 bool estaOcupada (coordenada c);
 vector <coordenada > AtacadasTorre (int i, int k, vector<coordenada> &Ac, tablero t);
-
+bool esCapturaoMovValido(posicion p, coordenada o, coordenada d);
+bool movPeonB (coordenada d, coordenada o);
+bool movPeonN (coordenada d, coordenada o);
+bool loDemasIgual(posicion p1, posicion p2, coordenada o, coordenada d);
+bool verSiEstaCoronado(posicion p1, posicion p2, coordenada o, coordenada d);
+bool movimientoBienRealizado (posicion p1, posicion p2, coordenada o, coordenada d);
 #endif //AJEDREZLITE_AUXILIARES_H

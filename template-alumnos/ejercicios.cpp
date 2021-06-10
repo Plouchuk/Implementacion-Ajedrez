@@ -46,7 +46,8 @@ vector <coordenada> casillasAtacadas ( posicion const &p, int j ) {
 }
 // EJERCICIO 4
 bool posicionSiguienteCorrecta ( posicion const &p1, posicion const &p2, coordenada o, coordenada d ) {
-    bool resp = false;
+    bool resp ;
+    resp = esCapturaoMovValido(p1, o, d) && loDemasIgual(p1, p2, o, d)  && movimientoBienRealizado(p1, p2, o, d);
     // completar codigo
     return resp;
 }

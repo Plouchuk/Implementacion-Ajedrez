@@ -62,7 +62,7 @@ bool  sinPeonesNoCoronados(tablero t){
 }
 
 bool cantidadValidadePiezas(tablero t){
-    bool res = false;
+    bool res ;
     int CPN = 0;
     int CPB = 0;
     int CAN = 0;
@@ -101,9 +101,8 @@ bool cantidadValidadePiezas(tablero t){
         }
 
     }
-    if (CPN <= 8 && CPB <= 8 && CTB <=2 && CTN <= 2 && CAB <= 2 && CAN <= 2 && CRB == 1 && CRN == 1){
-        res = true;
-    }
+    res = (CPN <= 8 && CPB <= 8 && CTB <= (2 + 8 - CPB)  && CTN <= (2 + 8 - CPN) && CAB <= 2 && CAN <= 2 && CRB == 1 && CRN == 1);
+
     return res;
 }
 
@@ -353,3 +352,115 @@ vector <coordenada > AtacadasTorre (int i, int k, vector<coordenada> &Ac, tabler
 }
 
 //Prueba modificacion SEBA
+
+// Ejercicio 4
+
+
+bool movPeonB (coordenada o, coordenada d){
+    bool res;
+    res =  (o.first - 1 == d.first  && d.second == o.second );
+    return res;
+}
+
+bool movPeonN (coordenada o, coordenada d){
+    bool res;
+    res =  (o.first + 1 == d.first  && d.second == o.second );
+    return res;
+}
+
+bool esCapturaoMovValido(posicion p, coordenada o, coordenada d){
+    tablero t = p.first;
+    vector<coordenada> v;
+    bool res = false;
+    int d1 = d.first;
+    int d2 = d.second;
+    int o1 = o.first;
+    int o2 = o.second;
+    if ((t[d1][d2]).second != p.second){
+        if (t[o1][o2] == cPEON_B){
+            if (estaOcupada(t[d1][d2])){
+                if(pertenece(o, AtacadasPeonB(o1, o2, v))){
+                    res = true;
+                }
+            }
+            else {
+               res = movPeonB(o,d);
+
+            }
+        }
+        if (t[o1][o2] == cPEON_N){
+            if (estaOcupada(t[d1][d2])){
+                if(pertenece(o, AtacadasPeonN(o1, o2,v))){
+                    res = true;
+                }
+            }
+            else{
+                res = movPeonN(o,d);
+
+            }
+        }
+        if ((t[d1][d2]).first == ALFIL ){
+            if(pertenece(o, AtacadasAlfil(o1, o2,v, p.first))){
+                res = true;
+            }
+        }
+        if ((t[d1][d2]).first == TORRE ){
+            if(pertenece(o, AtacadasTorre(o1, o2,v, p.first))){
+                res = true;
+            }
+        }
+        if ((t[d1][d2]).first == REY ){
+            if(pertenece(o, AtacadasRey(o1, o2,v))){
+                res = true;
+            }
+        }
+
+    }
+    return res;
+}
+
+bool loDemasIgual(posicion p1, posicion p2, coordenada o, coordenada d){
+    tablero t1 = p1.first;
+    tablero t2 = p2.first;
+    bool res = true;
+    for (int i = 0; i < t1.size() ; ++i) {
+        for (int j = 0; j <t2.size() ; ++j) {
+            if (setCoord(i,j) != o && setCoord(i,j) !=d ){
+                if (t1[i][j] != t2[i][j]){
+                    res = false;
+                }
+            }
+        }
+    }
+    return res;
+}
+
+bool verSiEstaCoronado(posicion p1, posicion p2, coordenada o, coordenada d){
+    int d1 = d.first;
+    int d2 = d.second;
+    int o1 = o.first;
+    int o2 = o.second;
+    bool res = true;
+    tablero t1 = p1.first;
+    tablero t2 =p2.first;
+    if((t1[o1][o2] == cPEON_B && d1 == 0) || (t1[o1][o2] == cPEON_N && d1 == 7) ){
+        res = (t2[d1][d2]).first == TORRE;
+    }
+    return res;
+}
+
+bool movimientoBienRealizado (posicion p1, posicion p2, coordenada o, coordenada d){
+    tablero t1 = p1.first;
+    tablero t2 =p2.first;
+    int d1 = d.first;
+    int d2 = d.second;
+    int o1 = o.first;
+    int o2 = o.second;
+    bool res;
+    if ((t1[o1][o2]).first == PEON ) {
+        res = (!estaOcupada(t2[o1][o2]) && verSiEstaCoronado(p1, p2, o, d));
+    }
+    else{ res = (!estaOcupada(t2[o1][o2]) && (t1[o1][o2]) == (t2[d1][d2]) );
+    }
+    return res;
+}
