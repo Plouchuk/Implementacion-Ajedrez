@@ -464,3 +464,40 @@ bool movimientoBienRealizado (posicion p1, posicion p2, coordenada o, coordenada
     }
     return res;
 }
+
+void  ordenarv (vector<casilla> &v ) {
+    for (int i = 0; i < v.size(); ++i) {
+        if (v[i] != cVACIA){
+            int minPos = encontrarMinPosNoVacia(v, i, v.size());
+            swap(v, i, minPos);
+        }
+    }
+}
+
+vector<casilla> ordenarFila (vector<casilla> v) {
+    ordenarv( v);
+
+    return v;
+}
+
+int encontrarMinPosNoVacia(vector<casilla> v, int d, int h){
+    int min = d;
+    for (int i = d+1; i < h ; ++i) {
+        if(v[i] != cVACIA ){
+            if((v[i]).first < (v[min]).first){
+                min =i;
+            }
+        }
+    }
+    return min;
+}
+
+void swap(vector<casilla> &v, int i, int j){
+casilla aux = v[i];
+v[i] = v[j];
+v[j] = aux;
+
+}
+
+
+
