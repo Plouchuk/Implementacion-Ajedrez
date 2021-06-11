@@ -51,7 +51,12 @@ vector<casilla> ordenarFila(vector<casilla> &v);
 int findMinPosition(vector<casilla> &v, int d, int h);
 void swap(vector<casilla> &v ,int i, int j);
 void selectionSort(vector<casilla> &v);
-
-
+bool esJaque(posicion p);
+vector <coordenada> Atacadas ( posicion const &p, int j );
+int jugadorContrario (posicion p);
+posicion posicionSig(posicion &p, coordenada o, coordenada d);
+bool esMovLegal(posicion p, coordenada o, coordenada d);
+bool hayMovLegal (posicion p);
+bool soloQuedanReyes (posicion p);
 
 #endif //AJEDREZLITE_AUXILIARES_H

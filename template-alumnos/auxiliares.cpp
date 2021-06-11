@@ -490,8 +490,6 @@ void selectionSort(vector<casilla> &v) {
 
     }
 }
-
-
 vector<casilla> ordenarFila(vector<casilla> &v){
 
     selectionSort(v);
@@ -499,3 +497,128 @@ vector<casilla> ordenarFila(vector<casilla> &v){
     return v;
 
 }
+
+bool esJaque(posicion p){
+    int j = p.second;
+    bool res = false;
+    tablero t = p.first;
+    vector<casilla> v = Atacadas(p, jugadorContrario(p));
+    for (int i = 0; i <t.size() ; ++i) {
+        for (int k = 0; k < t.size(); ++k) {
+            if(t[i][k] == make_pair(REY, j)){
+               res = pertenece(setCoord(i,k), v);
+            }
+        }
+    }
+    return res;
+}
+
+
+vector <coordenada> Atacadas ( posicion const &p, int j ) {
+    vector <coordenada> cA;
+    tablero t = p.first;
+    for (int i = 0; i < t.size() ; ++i) {
+        for (int k = 0; k < t.size()  ; ++k) {
+            if(t[i][k] == cPEON_B && j == BLANCO){
+                cA = AtacadasPeonB(i,k,cA );
+            }
+            if(t[i][k] == cPEON_N && j == NEGRO){
+                cA= AtacadasPeonN(i,k,cA);
+            }
+            if ((t[i][k] ).first == REY && (t[i][k] ).second == j ){
+                cA =  AtacadasRey (i,k, cA);
+            }
+            if ((t[i][k] ).first == ALFIL && (t[i][k] ).second == j ){
+                cA = AtacadasAlfil(i ,k , cA, t);
+            }
+            if ((t[i][k] ).first == TORRE && (t[i][k] ).second == j ){
+                cA = AtacadasTorre(i ,k , cA, t);
+            }
+        }
+
+    }
+    // completar codigo
+    return cA;
+}
+
+
+int jugadorContrario(posicion p ){
+    int jug = p.second;
+    int j;
+    if (jug ==1){
+        j = 2;
+    }
+    else { j = 1;
+    }
+    return  j;
+}
+posicion posicionSig(posicion &p, coordenada o, coordenada d){
+    if((p.first)[o.first][o.second] == cPEON_B && d.first == 0  && esCapturaoMovValido(p,o,d)){
+        p.first[o.first][o.second ] = cVACIA;
+        p.first[d.first][d.second] = make_pair(TORRE, p.second);
+        p.second = jugadorContrario(p);
+
+    }
+    else if((p.first)[o.first][o.second] == cPEON_N && d.first == 7  && esCapturaoMovValido(p,o,d)) {
+        p.first[o.first][o.second] = cVACIA;
+        p.first[d.first][d.second] = make_pair(TORRE, p.second);
+        p.second = jugadorContrario(p);
+    }
+    else if (esCapturaoMovValido(p,o,d)) {
+        casilla aux = p.first[o.first][o.second];
+        p.first[o.first][o.second] = cVACIA;
+        p.first[d.first][d.second] = aux;
+        p.second = jugadorContrario(p);
+    }
+    return p;
+}
+
+bool esMovLegal(posicion p, coordenada o, coordenada d){
+    bool res;
+    posicion p2 = posicionSig(p, o, d);
+    res = !esJaque(make_pair(p2.first, p.second)) && esCapturaoMovValido(p,o,d);
+    return res;
+}
+
+bool hayMovLegal (posicion p){
+    bool res =  false;
+    for (int i = 0; i <ANCHO_TABLERO && res == false; ++i) {
+        for (int j = 0; j <ANCHO_TABLERO && res == false ; ++j) {
+            if (((p.first)[i][j]).second == p.second) {
+                for (int k = 0; k < ANCHO_TABLERO && res == false; ++k) {
+                    for (int l = 0; l < ANCHO_TABLERO && res == false; ++l) {
+                        if (((p.first)[k][l]).second != p.second) {
+                            if (esMovLegal(p, setCoord(i, j), setCoord(k, l))) {
+                                res = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return res;
+}
+
+
+bool soloQuedanReyes (posicion p){
+     bool res = false;
+     int contador =0;
+    tablero t = p.first;
+    for (int i = 0; i < t.size(); ++i) {
+        for (int j = 0; j <t.size() ; ++j) {
+            if (t[i][j] != cVACIA){
+                contador ++;
+            }
+        }
+    }
+    if (contador == 2){
+        res = true;
+    }
+    return res;
+}
+
+
+
+
+
