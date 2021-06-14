@@ -63,10 +63,11 @@ void ordenarTablero ( posicion &p ) {
 // EJERCICIO 6
 bool finDeLaPartida ( posicion const &p, int &j ) {
     bool resp = false;
-    if(esJaque (p) && !hayMovLegal(p)){
+    if( esJaque (p)  &&   !hayMovLegal(p)){
         resp = true;
         j = jugadorContrario(p);
-    } else if((!esJaque(p) && !hayMovLegal(p)) || soloQuedanReyes(p)){
+    }
+    else if((!esJaque(p) && !hayMovLegal(p)) || soloQuedanReyes(p)){
         resp = true;
         j = 0 ;
     }
@@ -76,6 +77,7 @@ bool finDeLaPartida ( posicion const &p, int &j ) {
 // EJERCICIO 7
 bool hayJaqueDescubierto ( posicion const &p ) {
     bool resp = false;
+
     // completar codigo
     return resp;
 }

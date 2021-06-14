@@ -54,9 +54,18 @@ void selectionSort(vector<casilla> &v);
 bool esJaque(posicion p);
 vector <coordenada> Atacadas ( posicion const &p, int j );
 int jugadorContrario (posicion p);
-posicion posicionSig(posicion &p, coordenada o, coordenada d);
+void posicionSig(posicion &p, coordenada o, coordenada d);
 bool esMovLegal(posicion p, coordenada o, coordenada d);
 bool hayMovLegal (posicion p);
 bool soloQuedanReyes (posicion p);
+posicion LaSigPosEs(posicion p, coordenada o, coordenada d);
+
+/*Ejercicio 7*/
+
+bool esJaqueEnCoordDistintaA(posicion p, coordenada d);
+vector<coordenada> eliminarElemento(vector<coordenada> v, coordenada d);
+vector <coordenada> coordsQueAtacan ( posicion const &p, int j );
+coordenada dameAlReyJ(posicion p);
+
 
 #endif //AJEDREZLITE_AUXILIARES_H
