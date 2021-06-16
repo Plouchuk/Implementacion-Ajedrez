@@ -76,19 +76,29 @@ bool finDeLaPartida ( posicion const &p, int &j ) {
 }
 // EJERCICIO 7
 bool hayJaqueDescubierto ( posicion const &p ) {
-    bool resp = false;
-
+    bool resp ;
+    resp = jaqueDescubierto(p);
     // completar codigo
     return resp;
 }
 // EJERCICIO 8
 void ejecutarSecuenciaForzada ( posicion &p, secuencia s ) {
+    posicion p1;
+    coordenada c1;
+    coordenada c2;
+    for (int i = 0; i <s.size() ; ++i) {
+       p1 = LaSigPosEs(p,s[i].first, s[i].second);
+       c1 = unicoMovValido(p1).first;
+       c2 = unicoMovValido(p1).second;
+       p = LaSigPosEs(p1, c1, c2);
+
+    }
     // completar codigo
-    return;
 }
 // EJERCICIO 9
 int seVieneElJaqueEn ( posicion const & p ) {
-    int resp = -1;
+    int resp = 2;
     // completar codigo
     return resp;
 }
+

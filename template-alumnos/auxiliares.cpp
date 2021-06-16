@@ -634,13 +634,12 @@ bool esJaqueEnCoordDistintaA(posicion p, coordenada d){
     bool res = false;
     tablero t = p.first;
 
-    vector<coordenada> v = Atacadas(p, jugadorContrario(p));
-    vector<coordenada> vect = eliminarElemento (v, d);
+    vector<coordenada> v = AtacadasXtodasMenosC(p, jugadorContrario(p) , d);
 
     for (int i = 0; i <t.size() ; ++i) {
         for (int k = 0; k < t.size(); ++k) {
             if(t[i][k] == make_pair(REY, j)){
-                res = pertenece(setCoord(i,k), vect) ;
+                res = pertenece(setCoord(i,k), v) ;
             }
         }
     }
@@ -657,25 +656,28 @@ vector<coordenada> eliminarElemento(vector<coordenada> v, coordenada d){
     return c;
 }
 
-vector <coordenada> coordsQueAtacan ( posicion const &p, int j ) {
+
+vector <coordenada> AtacadasXtodasMenosC ( posicion const &p, int j , coordenada c) {
     vector <coordenada> cA;
     tablero t = p.first;
     for (int i = 0; i < t.size() ; ++i) {
         for (int k = 0; k < t.size()  ; ++k) {
-            if(t[i][k] == cPEON_B && j == BLANCO){
-                if (pertenece(dameAlReyJ(p, p.second), AtacadasPeonB(i,k,cA ));
-            }
-            if(t[i][k] == cPEON_N && j == NEGRO){
-                cA= AtacadasPeonN(i,k,cA);
-            }
-            if ((t[i][k] ).first == REY && (t[i][k] ).second == j ){
-                cA =  AtacadasRey (i,k, cA);
-            }
-            if ((t[i][k] ).first == ALFIL && (t[i][k] ).second == j ){
-                cA = AtacadasAlfil(i ,k , cA, t);
-            }
-            if ((t[i][k] ).first == TORRE && (t[i][k] ).second == j ){
-                cA = AtacadasTorre(i ,k , cA, t);
+            if (t[i][k] != c) {
+                if (t[i][k] == cPEON_B && j == BLANCO) {
+                    cA = AtacadasPeonB(i, k, cA);
+                }
+                if (t[i][k] == cPEON_N && j == NEGRO) {
+                    cA = AtacadasPeonN(i, k, cA);
+                }
+                if ((t[i][k]).first == REY && (t[i][k]).second == j) {
+                    cA = AtacadasRey(i, k, cA);
+                }
+                if ((t[i][k]).first == ALFIL && (t[i][k]).second == j) {
+                    cA = AtacadasAlfil(i, k, cA, t);
+                }
+                if ((t[i][k]).first == TORRE && (t[i][k]).second == j) {
+                    cA = AtacadasTorre(i, k, cA, t);
+                }
             }
         }
 
@@ -684,4 +686,115 @@ vector <coordenada> coordsQueAtacan ( posicion const &p, int j ) {
     return cA;
 }
 
-coordenada dameAlReyJ(posicion p){}
+coordenada dameAlReyJ(posicion p, int j) {
+    tablero t = p.first;
+    coordenada  r ;
+    for (int i = 0; i < t.size() ; ++i) {
+        for (int j = 0; j < t.size() ; ++j) {
+            if (t[i][j] == make_pair(REY,j)){
+                r = setCoord(i,j);
+            }
+
+        }
+
+    }
+    return  r;
+}
+
+bool jaqueDescubierto (posicion p){
+    bool res = false;
+
+    for (int i = 0; i <ANCHO_TABLERO && res == false ; ++i) {
+        for (int j = 0; j <ANCHO_TABLERO && res == false ; ++j) {
+            if (p.first[i][j].second == p.second) {
+                for (int k = 0; k < ANCHO_TABLERO && res == false ; ++k) {
+                    for (int l = 0; l < ANCHO_TABLERO && res == false ; ++l) {
+                        if (p.first[k][l].second != p.second && esMovLegal(p, setCoord(i, j), setCoord(k, l))) {
+                            posicion p2 = LaSigPosEs(p, setCoord(i,j), setCoord(k,l));
+                            res = esJaqueEnCoordDistintaA(p2, setCoord(k,l));
+
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return res;
+}
+
+
+pair<coordenada, coordenada> unicoMovValido(posicion p){
+    tablero t = p.first;
+    int b = p.second;
+    bool cortar = false;
+    pair<coordenada, coordenada> res ;
+    for (int i = 0; i < ANCHO_TABLERO && cortar == false ; ++i) {
+        for (int j = 0; j < ANCHO_TABLERO && cortar == false; ++j) {
+            if((t[i][j]).second == b ){
+            for (int k = 0; k <ANCHO_TABLERO && cortar == false; ++k) {
+                for (int l = 0; l <ANCHO_TABLERO && cortar == false ; ++l) {
+                    if (esMovLegal(p, setCoord(i,j), setCoord(k,l))){
+                        res = make_pair(setCoord(i,j), setCoord(k,l));
+                        cortar = true;
+                    }
+
+
+                }
+
+            }
+
+        }
+        }
+    }
+    return  res;
+}
+
+
+bool estaForzado(posicion p){
+    int mov =0;
+    tablero t = p.first;
+    int j = p.second;
+    bool res = true;
+    for (int i = 0; i < t.size() && res == true ; ++i) {
+        for (int k = 0; k <t.size() && res == true ; ++k) {
+            if(t[i][k].second == j){
+                vector<coordenada> v = AtacadasPorC(p, i,k);
+                for (int l = 0; l < v.size() && res == true  ; ++l) {
+                    if (esMovLegal(p, setCoord(i,k), v[l])){
+                        mov ++;
+                        if(mov > 1){
+                            res = false;
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+    return res;
+}
+
+
+vector <coordenada> AtacadasPorC ( posicion const &p, int c1, int c2 ) {
+    vector <coordenada> cA;
+    tablero t = p.first;
+            if( t[c1][c2] == cPEON_B ){
+                cA = AtacadasPeonB(c1,c2,cA );
+            }
+            if(t[c1][c2] == cPEON_N  ){
+                cA= AtacadasPeonN(c1,c2,cA);
+            }
+            if (t[c1][c2].first == REY ){
+                cA =  AtacadasRey (c1,c2, cA);
+            }
+            if (t[c1][c2].first == ALFIL   ){
+                cA = AtacadasAlfil(c1 ,c2 , cA, t);
+            }
+            if (t[c1][c2].first == TORRE  ){
+                cA = AtacadasTorre(c1 ,c2 , cA, t);
+    }
+    // completar codigo
+    return cA;
+}
+

@@ -64,8 +64,17 @@ posicion LaSigPosEs(posicion p, coordenada o, coordenada d);
 
 bool esJaqueEnCoordDistintaA(posicion p, coordenada d);
 vector<coordenada> eliminarElemento(vector<coordenada> v, coordenada d);
-vector <coordenada> coordsQueAtacan ( posicion const &p, int j );
-coordenada dameAlReyJ(posicion p);
+coordenada dameAlReyJ(posicion p, int j);
+vector <coordenada> AtacadasXtodasMenosC ( posicion const &p, int j , coordenada c);
+bool jaqueDescubierto (posicion p);
 
+/*Ejercicio 8*/
+
+pair<coordenada, coordenada> unicoMovValido(posicion p);
+
+
+bool estaForzado(posicion p);
+int cantidadDeMovimientos(posicion p);
+vector <coordenada> AtacadasPorC ( posicion const &p, int c1, int c2 );
 
 #endif //AJEDREZLITE_AUXILIARES_H
