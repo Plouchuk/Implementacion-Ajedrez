@@ -72,9 +72,18 @@ bool jaqueDescubierto (posicion p);
 
 pair<coordenada, coordenada> unicoMovValido(posicion p);
 
-
+// EJERCICIO 9
 bool estaForzado(posicion p);
 int cantidadDeMovimientos(posicion p);
+bool esJaqueMate(posicion p);
 vector <coordenada> AtacadasPorC ( posicion const &p, int c1, int c2 );
+bool ganasEn1(posicion p);
+void Forzame(posicion &p);
+int CuandoGano(posicion p);
+posicion CaminoForzado(posicion p);
+// 9v2
+int enCuantoGano( posicion const &p );
+bool conEstaPiezaFuerzo(posicion p, coordenada c);
+bool conEstaPiezaFuerzoYGano(posicion p, coordenada c);
 
 #endif //AJEDREZLITE_AUXILIARES_H

@@ -97,7 +97,7 @@ void ejecutarSecuenciaForzada ( posicion &p, secuencia s ) {
 }
 // EJERCICIO 9
 int seVieneElJaqueEn ( posicion const & p ) {
-    int resp = 2;
+    int resp = enCuantoGano(p);
     // completar codigo
     return resp;
 }

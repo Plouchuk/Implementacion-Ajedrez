@@ -750,31 +750,185 @@ pair<coordenada, coordenada> unicoMovValido(posicion p){
     return  res;
 }
 
+//EJERCICIO 9
 
-bool estaForzado(posicion p){
-    int mov =0;
+
+int CuandoGano(posicion p) {
+    int gano = -10 ;
     tablero t = p.first;
     int j = p.second;
-    bool res = true;
-    for (int i = 0; i < t.size() && res == true ; ++i) {
-        for (int k = 0; k <t.size() && res == true ; ++k) {
-            if(t[i][k].second == j){
-                vector<coordenada> v = AtacadasPorC(p, i,k);
-                for (int l = 0; l < v.size() && res == true  ; ++l) {
-                    if (esMovLegal(p, setCoord(i,k), v[l])){
-                        mov ++;
-                        if(mov > 1){
-                            res = false;
+    if (!ganasEn1(p)) {
+        for (int i = 0; i < t.size(); ++i) {
+            for (int k = 0; k < t.size(); ++k) {
+                if (t[i][k].second == j) {
+                    vector<coordenada> v = AtacadasPorC(p, i, k);
+                    for (int l = 0; l < v.size(); ++l) {
+                        if (esMovLegal(p, setCoord(i, k), v[l])) {
+                            posicion p2 = LaSigPosEs(p, setCoord(i, k), v[l]);
+                            if (estaForzado(p2)) {
+                                posicion p3 = CaminoForzado(p2);
+                                if (!ganasEn1(p3)) {
+                                    for (int i2 = 0; i2< t.size(); ++i2) {
+                                        for (int k2 = 0; k2 < t.size(); ++k2) {
+                                            if (p3.first[i2][k2].second == p3.second) {
+                                                vector<coordenada> v2 = AtacadasPorC(p, i2, k2);
+                                                for (int l2 = 0; l2 < v2.size(); ++l2) {
+                                                    if (esMovLegal(p3, setCoord(i2, k2), v2[l2])) {
+                                                        posicion p4 = LaSigPosEs(p, setCoord(i2, k2), v2[l2]);
+                                                        if (estaForzado(p4)) {
+                                                            posicion p5 = CaminoForzado(p4);
+                                                            if (!ganasEn1(p5)) {
+                                                            }
+                                                            else{gano = 3;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                else{
+                                    gano = 2;
+                                }
+
+                            }
                         }
                     }
                 }
             }
         }
+    }
+    else{gano =1;}
+    return gano;
+}
 
+
+bool conEstaPiezaFuerzo(posicion p, coordenada c){
+    bool res = false;
+    vector<coordenada> v = AtacadasPorC(p, c.first,c.second);
+    for (int l = 0; l < v.size() && res == false ; ++l) {
+        if (esMovLegal(p, c, v[l])) {
+            posicion p2 = LaSigPosEs(p, c, v[l]);
+            if(estaForzado(p2)){
+                res = true;
+            }
+        }
     }
     return res;
 }
 
+bool conEstaPiezaFuerzoYGano(posicion p, coordenada c){
+    bool res = false;
+    vector<coordenada> v = AtacadasPorC(p, c.first,c.second);
+    for (int l = 0; l < v.size() && res == false ; ++l) {
+        if (esMovLegal(p, c, v[l])) {
+            posicion p2 = LaSigPosEs(p, c, v[l]);
+            if (estaForzado(p2)) {
+                posicion p3 = CaminoForzado(p2);
+                if (ganasEn1(p3)) {
+                    res = true;
+                }
+            }
+
+        }
+    }
+    return res;
+}
+
+
+int enCuantoGano( posicion const &p ){
+    tablero t = p.first;
+    int j = p.second;
+    int res = 0;
+    bool noFrenar = true;
+    if(!ganasEn1(p)){
+
+        for (int k = 0; k < t.size() && noFrenar; ++k) {
+            for (int l = 0; l < t.size() && noFrenar; ++l) {
+                if (t[k][l].second == j && conEstaPiezaFuerzo(p,setCoord(k,l)) ){
+
+                    if(conEstaPiezaFuerzoYGano(p, setCoord(k,l)) ){
+                        res = 2;
+                        noFrenar = false;
+                    }
+                }
+            }
+        }
+        if (noFrenar){
+
+            res = 3;
+        }
+
+    }else{
+        res = 1;
+    }
+
+    return res;
+}
+
+bool ganasEn1(posicion p){
+    bool res = false;
+    tablero t = p.first;
+    int j =p.second;
+    for (int i = 0; i <t.size() && !res ; ++i) {
+        for (int k = 0; k < t.size() && !res ; ++k) {
+            if(t[i][k].second == j){
+                vector<coordenada> v = AtacadasPorC(p, i,k);
+                for (int l = 0; l < v.size() && !res ; ++l){
+                    if(esMovLegal(p, setCoord(i,k), v[l])){
+                        posicion p2 = LaSigPosEs(p, setCoord(i,k),v[l]);
+                        if (esJaqueMate(p2)){
+                            res = true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return res;
+}
+
+//pINI
+//P2
+//P3
+
+void Forzame(posicion &p){
+     p = LaSigPosEs(p,unicoMovValido(p).first, unicoMovValido(p).second);
+}
+
+posicion CaminoForzado(posicion p){
+    Forzame(p);
+return p;
+}
+
+bool estaForzado(posicion p){
+    int mov =0;
+    tablero t = p.first;
+    int j = p.second;
+    bool res;
+    for (int i = 0; i < t.size()   ; ++i) {
+        for (int k = 0; k <t.size()  ; ++k) {
+            if(t[i][k].second == j){
+                vector<coordenada> v = AtacadasPorC(p, i,k);
+                for (int l = 0; l < v.size()   ; ++l) {
+                    if (esMovLegal(p, setCoord(i,k), v[l])){
+                        mov ++;
+
+                        }
+                    }
+                }
+            }
+        }
+    res = (mov == 1);
+    return res;
+}
+
+bool esJaqueMate(posicion p){
+    bool res;
+    res = (esJaque(p) && !hayMovLegal(p));
+    return res;
+}
 
 vector <coordenada> AtacadasPorC ( posicion const &p, int c1, int c2 ) {
     vector <coordenada> cA;
