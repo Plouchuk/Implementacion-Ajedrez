@@ -54,3 +54,27 @@ TEST(casillasAtacadasTEST, atacadasDelContrincante) {
 	vector<coordenada> atacadas = casillasAtacadas(p, j);
 	EXPECT_EQ(ordenarVectorPares(esperado), ordenarVectorPares(atacadas));
 }
+TEST(casillasAtacadasTEST, atacadasDelReyYAlfil) {
+    tablero t = {
+            {cVACIA, cREY_N, cVACIA, cVACIA, cVACIA, cVACIA, cVACIA, cVACIA},
+            {cVACIA, cVACIA, cVACIA, cVACIA, cVACIA, cVACIA, cVACIA, cVACIA},
+            {cVACIA, cVACIA, cVACIA, cVACIA, cVACIA, cVACIA, cVACIA, cVACIA},
+            {cVACIA, cVACIA, cVACIA, cVACIA, cVACIA, cVACIA, cALFIL_N, cVACIA},
+            {cVACIA, cVACIA, cVACIA, cVACIA, cVACIA, cPEON_B, cVACIA, cVACIA},
+            {cVACIA, cVACIA, cVACIA, cVACIA, cVACIA, cVACIA, cVACIA, cVACIA},
+            {cVACIA, cVACIA, cVACIA, cVACIA, cREY_B, cVACIA, cVACIA, cVACIA},
+            {cVACIA, cVACIA, cVACIA, cVACIA, cVACIA, cVACIA, cVACIA, cVACIA},
+    };
+    posicion p = make_pair(t, BLANCO);
+
+    int j = NEGRO;
+
+    vector<coordenada> esperado = {
+            make_pair(0,0), make_pair(0,2), make_pair(1,0), make_pair(1,1), make_pair(1,2), //Rey Negro en (0,1)
+            make_pair(4,5), make_pair(4,7),make_pair(2,7),make_pair(2,5),make_pair(1,4),make_pair(0,3) //Alfil Negro en (3,6)
+
+    };
+
+    vector<coordenada> atacadas = casillasAtacadas(p, j);
+    EXPECT_EQ(ordenarVectorPares(esperado), ordenarVectorPares(atacadas));
+}
