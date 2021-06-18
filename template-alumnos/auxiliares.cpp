@@ -4,9 +4,9 @@
 
 using namespace std;
 // aqui se pueden ubicar todas las funciones auxiliares de soporte para la resolucion de los ejercicios
-pair<int,int> mp(int a, int b) {
-    return make_pair(a, b);
-}
+//pair<int,int> mp(int a, int b) {
+  //  return make_pair(a, b);
+//}
 
 // TEST
 vector<pair<int,int>> ordenarVectorPares(vector<pair<int,int>> &v) {
@@ -23,12 +23,12 @@ tablero tableroActual ( posicion const &p ) {
     return p.first;
 }
 
-tablero inicializarTablero(){
+/*tablero inicializarTablero(){
     vector<casilla> fila(ANCHO_TABLERO, cVACIA);
     tablero out(ANCHO_TABLERO, fila);
     return out;
 }
-
+*/
 /* EJERCICIO 1*/
 
 
